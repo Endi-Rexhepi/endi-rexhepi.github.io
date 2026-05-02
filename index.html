@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<!--
+  My portfolio. one html file on purpose which keeps it easy to host,
+  easy to read, and easy to come back to when i want to change something.
+  If you're poking around in devtools: hi 👋
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Endi Rexhepi — Portfolio</title>
+<meta name="description" content="Endi Rexhepi — Computer Science student at Constructor University Bremen. Full-stack developer working towards AI engineering. Notes, projects, and things I'm building.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,700&family=Caveat:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<!-- set theme before paint, otherwise dark-mode users get flashed with white. learned this the hard way -->
+<script>
+  const savedTheme = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  } else {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+</script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  /* light mode — paper + ink, what I use most days */
+  --bg: #F8F6F0;             /* off-white, paper-ish */
+  --ink: #0F172A;            /* almost-black, for headings */
+  --ink-soft: #334155;       /* body text */
+  --pencil: #64748B;         /* secondary text */
+  --faint: #94A3B8;          /* lightest grey-blue */
+
+  --term-accent: #0284C7;    /* the blue I keep coming back to */
+  --term-glow: rgba(2, 132, 199, 0.2);
+
+  --rule: rgba(2, 132, 199, 0.08);       /* grid lines */
+  --rule-strong: rgba(2, 132, 199, 0.3); /* margin line */
+
+  --highlight: rgba(2, 132, 199, 0.12);  /* highlighter swipe under headings */
+  --vignette: rgba(2, 132, 199, 0.05);   /* soft edge framing */
+
+  --serif:'Fraunces', 'Times New Roman', serif;
+  --hand:'Caveat', 'Bradley Hand', cursive;
+  --mono:'JetBrains Mono', ui-monospace, monospace;
+}
+
+[data-theme="dark"] {
+  /* dark mode — added after one too many 2am sessions */
+  --bg: #070B14;
+  --ink: #FFFFFF;
+  --ink-soft: #C2D0DF;
+  --pencil: #64829E;
+  --faint: #3A5571;
+
+  --term-accent: #22D3EE;    /* cyan, basically a terminal cursor */
+  --term-glow: rgba(34, 211, 238, 0.8);
+
+  --rule: rgba(34, 211, 238, 0.07);
+  --rule-strong: rgba(34, 211, 238, 0.25);
+
+  --highlight: rgba(34, 211, 238, 0.2);
+  --vignette: rgba(0, 0, 0, 0.85);
+}
+
+html{scroll-behavior:smooth}
+
+body{
+  background-color: var(--bg);
+  /* faint graph-paper grid — pure CSS, no image */
+  background-image:
+    linear-gradient(var(--rule) 1px, transparent 1px),
+    linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+  background-size: 2rem 2rem;
+  background-position: center top;
+  
+  color:var(--ink-soft);
+  font-family:var(--serif);
+  font-size:17.5px; /* 17 felt small, 18 felt loud */
+  line-height:1.7;
+  font-weight:400;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  position:relative;
+  min-height:100vh;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* the vertical margin line, like a notebook page */
+.page{
+  max-width:880px;
+  margin:0 auto;
+  padding:0 3.5rem 0 5.5rem;
+  position:relative;
+  z-index:2;
+}
+.page::before{
+  content:'';
+  position:absolute;
+  left:4rem; top:0; bottom:0;
+  width:1px;
+  background:var(--rule-strong);
+  transition: background 0.4s ease;
+}
+
+/* soft edge so the page doesn't look like it's floating */
+body::after{
+  content:'';
+  position:fixed; inset:0;
+  pointer-events:none;
+  z-index:1;
+  box-shadow: inset 0 0 150px var(--vignette); 
+  transition: box-shadow 0.4s ease;
+}
+
+/* top nav */
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  padding-top:2.2rem;
+  padding-bottom:1.5rem;
+  font-family:var(--hand);
+  font-size:1.5rem;
+  border-bottom:1px dashed var(--rule-strong);
+  margin-bottom:0;
+  position:relative;
+}
+.brand{
+  text-decoration:none;
+  color:var(--ink);
+  font-weight:700;
+  font-size:1.6rem;
+  letter-spacing:0.5px;
+  transition: color 0.4s ease;
+}
+.brand .pen{
+  display:inline-block;
+  border-bottom:2px solid var(--term-accent);
+  padding-bottom:1px;
+  transform:rotate(-1deg);
+}
+.brand .scribble{
+  font-size:0.95rem;
+  color:var(--term-accent);
+  margin-left:0.4rem;
+  transform:rotate(-3deg);
+  display:inline-block;
+  text-shadow: 0 0 8px var(--term-glow);
+  transition: color 0.4s ease, text-shadow 0.4s ease;
+}
+.nav-links{
+  display:flex; gap:1.4rem; align-items:baseline;
+}
+.nav-links a{
+  text-decoration:none;
+  color:var(--pencil);
+  font-family:var(--hand);
+  font-size:1.35rem;
+  position:relative;
+  padding:0 2px;
+  transition:all 0.2s;
+}
+.nav-links a:hover{ 
+  color:var(--term-accent); 
+  text-shadow: 0 0 8px var(--term-glow);
+}
+
+/* theme toggle button — tiny, hides on phones */
+.theme-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+}
+.theme-note {
+  position: absolute;
+  right: 120%;
+  top: 4px;
+  width: 180px;
+  font-family: var(--hand);
+  font-size: 1.15rem;
+  color: var(--term-accent);
+  line-height: 1.1;
+  text-align: right;
+  transform: rotate(-3deg);
+  opacity: 0.85;
+}
+.theme-btn {
+  background: transparent;
+  border: 1px dashed var(--term-accent);
+  color: var(--term-accent);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  text-shadow: 0 0 6px var(--term-glow);
+  box-shadow: 0 0 8px inset var(--term-glow);
+}
+.theme-btn:hover {
+  background: var(--term-accent);
+  color: var(--bg);
+  text-shadow: none;
+}
+
+/* hero / top of the page */
+header.hero{
+  padding:4.5rem 0 3.5rem;
+  position:relative;
+}
+
+.dateline{
+  font-family:var(--mono);
+  font-size:0.78rem;
+  color:var(--term-accent);
+  letter-spacing:0.05em;
+  margin-bottom:2rem;
+  display:flex; align-items:center; gap:1rem;
+}
+.dateline span{ color:var(--faint); }
+
+h1.title{
+  font-family:var(--serif);
+  font-weight:900;
+  font-size:clamp(3rem, 7vw, 5.4rem);
+  line-height:0.96;
+  letter-spacing:-0.025em;
+  color:var(--ink);
+  margin-bottom:0.4rem;
+  position:relative;
+  transition: color 0.4s ease;
+}
+h1.title .squiggle{
+  display:block;
+  margin-top:-0.3rem;
+  margin-left:0.2rem;
+  filter: drop-shadow(0 0 4px var(--term-glow)); 
+  transition: filter 0.4s ease;
+}
+h1.title em{
+  font-style:italic;
+  font-weight:400;
+  color:var(--term-accent);
+  font-feature-settings:"swsh" 1, "ss01" 1;
+}
+
+.subtitle{
+  font-family:var(--serif);
+  font-weight:400;
+  font-size:1.25rem;
+  color:var(--ink-soft);
+  margin-top:1.5rem;
+  max-width:580px;
+  line-height:1.6;
+}
+
+.margin-note{
+  position:absolute;
+  left:-4.6rem;
+  font-family:var(--hand);
+  font-size:1.15rem;
+  color:var(--term-accent);
+  line-height:1.15;
+  width:4.5rem;
+  text-align:right;
+  transform:rotate(-3deg);
+  opacity:0.9;
+  text-shadow: 0 0 6px var(--term-glow);
+}
+.margin-note .arrow-mn{
+  display:block;
+  font-family:var(--hand);
+  font-size:1.3rem;
+  margin-top:0.1rem;
+}
+
+.meta-list{
+  margin-top:2.4rem;
+  font-family:var(--mono);
+  font-size:0.85rem;
+  line-height:2.2;
+  color:var(--ink-soft);
+}
+.meta-list .k{
+  display:inline-block;
+  width:7rem;
+  color:var(--pencil);
+  text-transform:lowercase;
+}
+.meta-list .v b{ color:var(--term-accent); font-weight:600; }
+
+.hero-actions{
+  margin-top:2.6rem;
+  display:flex;
+  flex-wrap:wrap;
+  gap:0 2.4rem;
+  font-family:var(--serif);
+  font-size:1.05rem;
+}
+.hero-actions a{
+  text-decoration:none;
+  color:var(--ink);
+  font-weight:500;
+  position:relative;
+  padding:0.3rem 0;
+  display:inline-flex;
+  align-items:baseline;
+  gap:0.45rem;
+  transition: color 0.2s;
+}
+.hero-actions a .arr{
+  font-family:var(--hand);
+  color:var(--term-accent);
+  font-size:1.4rem;
+  transition:transform 0.4s cubic-bezier(.2,1.3,.4,1);
+  display:inline-block;
+}
+.hero-actions a:hover{ color: var(--term-accent); }
+.hero-actions a:hover .arr{ transform:translate(4px,-2px) rotate(8deg); }
+
+/* shared section spacing + dashed divider between them */
+section{
+  padding:4rem 0;
+  position:relative;
+}
+section + section{
+  border-top:1px dashed var(--rule-strong);
+}
+
+.section-head{
+  display:flex;
+  align-items:baseline;
+  gap:1rem;
+  margin-bottom:2.5rem;
+  position:relative;
+}
+.section-head .num{
+  font-family:var(--mono);
+  font-size:0.8rem;
+  color:var(--term-accent);
+  letter-spacing:0.1em;
+}
+.section-head h2{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:700;
+  font-size:2.4rem;
+  letter-spacing:-0.01em;
+  color:var(--ink);
+  position:relative;
+}
+.section-head h2 .hl{
+  position:relative;
+  display:inline-block;
+  z-index:1;
+}
+.section-head h2 .hl::before{
+  content:'';
+  position:absolute;
+  left:-6px; right:-6px;
+  top:35%; bottom:6%;
+  background:var(--highlight);
+  border: 1px solid var(--highlight);
+  box-shadow: 0 0 10px var(--highlight);
+  z-index:-1;
+  transform:rotate(-0.6deg) skew(-2deg);
+  /* uneven radii on purpose — looks more hand-drawn than a clean rectangle */
+  border-radius:2px 14px 4px 12px;
+  transition: all 0.4s ease;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem; 
+}
+
+/* about block */
+.about p{
+  font-family:var(--serif);
+  font-size:1.1rem;
+  line-height:1.8;
+  color:var(--ink-soft);
+  margin-bottom:1.1rem;
+  max-width:64ch;
+}
+.about p b{ color:var(--ink); font-weight:600; }
+.about p .pen-strike{
+  text-decoration:line-through;
+  text-decoration-color:var(--term-accent);
+  text-decoration-thickness:1.5px;
+  color:var(--pencil);
+}
+
+.facts{
+  margin-top:2.5rem;
+  border-top:1px solid var(--rule-strong);
+  border-bottom:1px solid var(--rule-strong);
+  padding:1.2rem 0;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  row-gap:0.8rem;
+  column-gap:1.6rem;
+  font-family:var(--serif);
+  background: var(--highlight); 
+  transition: background 0.4s ease;
+}
+.facts dt{
+  font-family:var(--mono);
+  font-size:0.8rem;
+  color:var(--term-accent);
+  letter-spacing:0.04em;
+  padding-top:4px;
+  white-space:nowrap;
+}
+.facts dd{
+  font-size:1.05rem;
+  color:var(--ink);
+  line-height:1.4;
+}
+.facts dd b{ font-weight:700; color: var(--term-accent); }
+.facts dd .qt{
+  display:block;
+  font-family:var(--hand);
+  font-size:1.1rem;
+  color:var(--pencil);
+  margin-top:0.2rem;
+}
+
+/* tech list / "stack trace" */
+.stack{
+  margin-top:2.4rem;
+  font-family:var(--serif);
+}
+.stack-label{
+  font-family:var(--hand);
+  font-size:1.4rem;
+  color:var(--term-accent);
+  margin-bottom:0.6rem;
+  display:inline-block;
+  transform:rotate(-1.5deg);
+  text-shadow: 0 0 4px var(--term-glow);
+}
+.stack-list{
+  font-family:var(--mono);
+  font-size:0.9rem;
+  line-height:2;
+  color:var(--ink-soft);
+  letter-spacing:0.01em;
+}
+.stack-list span{
+  display:inline-block;
+  margin-right:0.4rem;
+  position:relative;
+  padding:0 2px;
+}
+.stack-list span::after{
+  content:'·';
+  margin-left:0.7rem;
+  color:var(--faint);
+}
+.stack-list span:last-child::after{ content:''; }
+.stack-list span.now{
+  color:var(--term-accent);
+  font-weight:600;
+}
+.stack-list span.now::before{
+  content:'~';
+  margin-right:2px;
+  color:var(--term-accent);
+}
+
+/* projects list */
+.projects-list{
+  display:flex;
+  flex-direction:column;
+}
+.entry{
+  display:grid;
+  grid-template-columns:5.5rem 1fr auto;
+  gap:1.5rem;
+  padding:1.6rem 0;
+  border-top:1px solid var(--rule-strong);
+  align-items:baseline;
+  text-decoration:none;
+  color:inherit;
+  position:relative;
+  transition:background 0.2s ease;
+}
+.entry:last-child{ border-bottom:1px solid var(--rule-strong); }
+.entry:hover{ background:var(--highlight); }
+.entry:hover .entry-title{
+  color: var(--term-accent);
+}
+.entry:hover .go{ transform:translate(4px,-2px) rotate(6deg); color:var(--term-accent); }
+
+.entry-no{
+  font-family:var(--mono);
+  font-size:0.8rem;
+  color:var(--pencil);
+  letter-spacing:0.05em;
+  padding-top:6px;
+}
+.entry-title{
+  font-family:var(--serif);
+  font-weight:700;
+  font-size:1.45rem;
+  letter-spacing:-0.01em;
+  color:var(--ink);
+  display:inline;
+  margin-right:0.5rem;
+  transition: color 0.2s;
+}
+.entry-meta{
+  font-family:var(--hand);
+  font-size:1.2rem;
+  color:var(--term-accent);
+  display:inline;
+  white-space:nowrap;
+}
+.entry-desc{
+  font-family:var(--serif);
+  font-size:1.05rem;
+  line-height:1.65;
+  color:var(--ink-soft);
+  margin-top:0.5rem;
+  max-width:60ch;
+}
+.entry-stack{
+  margin-top:0.6rem;
+  font-family:var(--mono);
+  font-size:0.8rem;
+  color:var(--pencil);
+  letter-spacing:0.02em;
+}
+.entry-stack b{ color:var(--ink-soft); font-weight:400; }
+.go{
+  font-family:var(--hand);
+  font-size:1.6rem;
+  color:var(--ink);
+  transition:transform 0.4s cubic-bezier(.2,1.3,.4,1), color 0.2s;
+  align-self:baseline;
+  padding-top:6px;
+}
+
+/* little "in progress" sticker on unfinished projects */
+.entry.in-progress .entry-title::after{
+  content:'in progress';
+  font-family:var(--hand);
+  font-size:1.1rem;
+  color:var(--bg);
+  background: var(--term-accent);
+  margin-left:0.6rem;
+  font-weight:700;
+  padding:1px 9px 2px;
+  border-radius:18px 22px 19px 24px / 22px 18px 24px 19px;
+  transform:rotate(-2deg);
+  display:inline-block;
+  vertical-align:2px;
+  letter-spacing:0.01em;
+  box-shadow: 0 0 8px var(--term-glow);
+}
+
+/* cv / education entries */
+.cv-item{
+  display:grid;
+  grid-template-columns:9rem 1fr;
+  gap:2rem;
+  padding:1.8rem 0;
+  border-top:1px solid var(--rule-strong);
+}
+.cv-item:last-child{ border-bottom:1px solid var(--rule-strong); }
+.cv-when{
+  font-family:var(--mono);
+  font-size:0.85rem;
+  color:var(--term-accent);
+  letter-spacing:0.02em;
+  padding-top:6px;
+  line-height:1.5;
+}
+.cv-role{
+  font-family:var(--serif);
+  font-weight:700;
+  font-size:1.25rem;
+  letter-spacing:-0.01em;
+  color:var(--ink);
+}
+.cv-org{
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:1rem;
+  color:var(--pencil);
+  margin-bottom:0.7rem;
+}
+.cv-list{
+  list-style:none;
+  font-family:var(--serif);
+  font-size:1.05rem;
+  color:var(--ink-soft);
+  line-height:1.7;
+}
+.cv-list li{
+  padding-left:1.4rem;
+  position:relative;
+  margin-bottom:0.3rem;
+}
+.cv-list li::before{
+  content:'—';
+  position:absolute; left:0; top:0;
+  color:var(--term-accent);
+  font-weight:600;
+}
+
+/* contact block at the bottom */
+.colophon{
+  margin-top:0;
+  padding:5rem 0 6rem;
+  position:relative;
+}
+.colophon p.intro{
+  font-family:var(--serif);
+  font-size:1.1rem;
+  color:var(--ink-soft);
+  max-width:52ch;
+  line-height:1.7;
+  margin-bottom:2rem;
+}
+.colophon p.intro b{ color: var(--ink); }
+
+.contact-lines{
+  font-family:var(--mono);
+  font-size:0.95rem;
+  line-height:2.4;
+  color:var(--ink-soft);
+}
+.contact-lines a{
+  color:var(--ink);
+  text-decoration:none;
+  border-bottom:1px solid var(--term-accent);
+  padding-bottom:1px;
+  transition:all 0.2s;
+}
+.contact-lines a:hover{
+  background:var(--highlight);
+  color: var(--ink); 
+  text-shadow: 0 0 8px var(--term-glow);
+}
+.contact-lines .k{
+  display:inline-block;
+  width:7rem;
+  color:var(--pencil);
+}
+
+.signoff{
+  margin-top:3.5rem;
+  font-family:var(--hand);
+  font-size:2.2rem;
+  color:var(--term-accent);
+  transform:rotate(-3deg);
+  display:inline-block;
+  letter-spacing:1px;
+  text-shadow: 0 0 6px var(--term-glow);
+}
+
+/* footer — kept it boring on purpose */
+footer{
+  border-top:1px dashed var(--rule-strong);
+  margin-top:0;
+  padding:1.4rem 0 2rem;
+  font-family:var(--mono);
+  font-size:0.75rem;
+  color:var(--pencil);
+  display:flex;
+  justify-content:space-between;
+  letter-spacing:0.05em;
+}
+
+/* scroll-reveal stuff — only kicks in when JS loads */
+.js .draw-line{
+  stroke-dasharray:1;
+  stroke-dashoffset:1;
+  pathLength:1;
+}
+.js .draw-line.in{
+  animation:draw 1.1s cubic-bezier(.55,.05,.4,1) forwards;
+}
+@keyframes draw{ to{ stroke-dashoffset:0; } }
+
+.js .fade-up{
+  opacity:0;
+  transform:translateY(8px);
+  transition:opacity 0.7s ease, transform 0.7s ease;
+}
+.js .fade-up.in{ opacity:1; transform:none; }
+
+/* phones — strip out the notebook margins, hide the sticky notes */
+@media (max-width:760px){
+  .page{ padding:0 1.4rem 0 2.6rem; }
+  .page::before{ left:1.2rem; }
+  .margin-note{ display:none; }
+  .theme-note { display:none; } 
+  nav{ font-size:1.2rem; padding-top:1.6rem; flex-wrap: wrap; gap: 1rem; }
+  .nav-links{ gap:0.9rem; }
+  .nav-links a{ font-size:1.1rem; }
+  header.hero{ padding:2.5rem 0 2rem; }
+  h1.title{ font-size:2.8rem; }
+  .subtitle{ font-size:1.1rem; }
+  .meta-list .k{ width:5.5rem; }
+  .entry{ grid-template-columns:2.2rem 1fr; }
+  .entry .go{ display:none; }
+  .cv-item{ grid-template-columns:1fr; gap:0.4rem; }
+  .facts{ grid-template-columns:1fr; row-gap:0.2rem; }
+  .facts dt{ padding-top:0.8rem; }
+  section{ padding:2.6rem 0; }
+}
+
+/* respect users who'd rather not watch things slide around */
+@media (prefers-reduced-motion:reduce){
+  .fade-up, .draw-line{ animation:none !important; transition:none !important; opacity:1 !important; transform:none !important; stroke-dashoffset:0 !important; }
+  html{ scroll-behavior:auto; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <nav>
+    <a class="brand" href="#top">
+      <span class="pen">Endi Rexhepi</span>
+      <span class="scribble">sys.log</span>
+    </a>
+    
+    <div class="nav-right">
+      <div class="theme-wrapper">
+        <span class="theme-note">built this toggle 'cause I like playing with the DOM ↘</span>
+        <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
+          <span id="theme-icon">🌓</span>
+        </button>
+      </div>
+
+      <div class="nav-links">
+        <a href="#about">about</a>
+        <a href="#work">work</a>
+        <a href="#cv">cv</a>
+        <a href="#say-hi">ping</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="dateline">
+      <span>entry_</span> bremen · last edited may 2026
+    </div>
+
+    <h1 class="title">
+      Hello, I'm Endi.
+      <svg class="squiggle" width="320" height="22" viewBox="0 0 320 22" fill="none" aria-hidden="true">
+        <path class="draw-line" d="M2 14 C 30 4, 60 22, 95 12 S 160 4, 200 14 S 280 20, 318 8"
+              stroke="var(--term-accent)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+      </svg>
+    </h1>
+
+    <p class="subtitle">
+      A computer-science student in Bremen who writes a lot of code, loses
+      a lot at chess, and is slowly teaching himself how to make machines
+      that pretend to think.
+    </p>
+
+    <div class="margin-note" style="top:7.5rem;">
+      Constructor<br>Univ. Bremen
+      <span class="arrow-mn">↘</span>
+    </div>
+
+    <dl class="meta-list">
+      <div><span class="k">based</span> <span class="v"><b>Bremen, DE</b> &nbsp;·&nbsp; from Tirana, AL</span></div>
+      <div><span class="k">studying</span> <span class="v">B.Sc. Computer Science, 2nd year</span></div>
+      <div><span class="k">currently</span> <span class="v">building MERN apps · poking at LLMs &amp; RAG</span></div>
+      <div><span class="k">next</span> <span class="v">looking for a Werkstudent role from <b>July 2026</b></span></div>
+      <div><span class="k">languages</span> <span class="v">Albanian, English &nbsp;·&nbsp; German <em style="color:var(--pencil)">(A2, slowly)</em></span></div>
+    </dl>
+
+    <div class="hero-actions">
+      <a href="https://github.com/Endi-Rexhepi" target="_blank" rel="noopener noreferrer">
+        github / Endi-Rexhepi <span class="arr">↗</span>
+      </a>
+      <a href="./Endi_Rexhepi_CV.pdf" target="_blank" rel="noopener noreferrer">
+        fetch cv (pdf) <span class="arr">↓</span>
+      </a>
+      <a href="mailto:endirexhepi5@gmail.com">
+        init connection <span class="arr">→</span>
+      </a>
+    </div>
+  </header>
+
+  <section id="about" class="about">
+    <div class="section-head">
+      <span class="num">0x01</span>
+      <h2><span class="hl">About, briefly.</span></h2>
+    </div>
+
+    <p>
+      I study Computer Science at <b>Constructor University Bremen</b>. Most days I'm
+      writing JavaScript or Python; some days I'm fighting C++ pointers and losing.
+      Outside of coursework I build full-stack web things and chip away at machine
+      learning — through real projects, not <span class="pen-strike">just</span> tutorials.
+    </p>
+
+    <p>
+      Before university I spent a lot of high school in olympiads. Won gold at the
+      national chemistry olympiad (ASEF), then flew to New York to represent
+      Albania at the Genius Olympiad — robotics track, hosted at RIT. 
+    </p>
+
+    <p>
+      In April my team and I built a 1–4 player multiplayer game from scratch in
+      under 72 hours at a hackathon. Vanilla JS, no engine. We came 5th of 13 —
+      and I learned more about networking in three days than in a semester.
+    </p>
+
+    <dl class="facts">
+      <dt>education</dt>
+      <dd><b>B.Sc. Computer Science</b> — Constructor University Bremen, 2024–2027</dd>
+
+      <dt>hackathon</dt>
+      <dd><b>Press &amp; Play 2026</b> — 5th of 13 teams, multiplayer dungeon crawler in 72h</dd>
+
+      <dt>olympiads</dt>
+      <dd><b>National Gold</b> in Chemistry (ASEF) &nbsp;·&nbsp; <b>Genius Olympiad</b> Robotics, RIT NYC 2023</dd>
+
+      <dt>currently</dt>
+      <dd>Harvard CS50P · LLM Engineering Zoomcamp (DataTalks.Club) · AWS CCP soon
+        <span class="qt">— learning in public, mostly on github.</span></dd>
+    </dl>
+
+    <div class="stack">
+      <div class="stack-label">stack trace ↓</div>
+      <div class="stack-list">
+        <span>JavaScript</span><span>TypeScript</span><span>React</span><span>Node.js</span><span>Express</span><span>MongoDB</span><span>SQL</span><span>REST</span><span>JWT</span><span>Python</span><span>C / C++</span><span>Git</span><span>Linux</span><span class="now">LLMs / RAG</span><span class="now">Docker</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="section-head">
+      <span class="num">0x02</span>
+      <h2><span class="hl">Things I've built.</span></h2>
+    </div>
+
+    <div class="projects-list">
+
+      <a class="entry" href="https://github.com/Endi-Rexhepi/Internship-Tracker" target="_blank" rel="noopener noreferrer">
+        <div class="entry-no">PID_01</div>
+        <div class="entry-body">
+          <span class="entry-title">Internship Tracker</span>
+          <span class="entry-meta">— a kanban for the job hunt</span>
+          <p class="entry-desc">
+            A multi-user MERN app I built because spreadsheets weren't cutting it.
+            JWT auth, bcrypt-hashed passwords, protected REST endpoints, and a
+            drag-and-drop board backed by MongoDB. Full CRUD, my own.
+          </p>
+          <div class="entry-stack"><b>React</b> · <b>Node</b> · <b>Express</b> · <b>MongoDB</b> · <b>JWT</b></div>
+        </div>
+        <div class="go">↗</div>
+      </a>
+
+      <a class="entry" href="https://erexhepi.itch.io/dreadfort" target="_blank" rel="noopener noreferrer">
+        <div class="entry-no">PID_02</div>
+        <div class="entry-body">
+          <span class="entry-title">Dreadfort</span>
+          <span class="entry-meta">— 72 hours, no engine, four players</span>
+          <p class="entry-desc">
+            A medieval dungeon crawler with seven levels and boss fights, built
+            with a small team for Press &amp; Play 2026. Vanilla JS, HTML5 canvas,
+            real-time multiplayer for up to four. We placed 5th of 13.
+          </p>
+          <div class="entry-stack"><b>JavaScript</b> · <b>Canvas</b> · <b>WebSockets</b> · hackathon</div>
+        </div>
+        <div class="go">↗</div>
+      </a>
+
+      <a class="entry in-progress" href="https://github.com/DataTalksClub/llm-zoomcamp" target="_blank" rel="noopener noreferrer">
+        <div class="entry-no">PID_03</div>
+        <div class="entry-body">
+          <span class="entry-title">LLM Zoomcamp · Cohort 2026</span>
+          <p class="entry-desc">
+            Ten weeks of RAG systems, vector search, evaluation, and deployment
+            with DataTalks.Club. Weekly graded assignments, all pushed to GitHub
+            as I go. The point isn't a certificate — the point is the reps.
+          </p>
+          <div class="entry-stack"><b>Python</b> · <b>LLMs</b> · <b>RAG</b> · <b>Docker</b></div>
+        </div>
+        <div class="go">↗</div>
+      </a>
+
+    </div>
+  </section>
+
+  <section id="cv">
+    <div class="section-head">
+      <span class="num">0x03</span>
+      <h2><span class="hl">Execution history.</span></h2>
+    </div>
+
+    <div class="cv-item">
+      <div class="cv-when">Sep 2024 —<br>Aug 2027</div>
+      <div>
+        <div class="cv-role">B.Sc. Computer Science</div>
+        <div class="cv-org">Constructor University Bremen — Bremen, Germany</div>
+        <ul class="cv-list">
+          <li>C / C++, Algorithms &amp; Data Structures, Computer Architecture, Operating Systems.</li>
+          <li>On the side: Harvard CS50P, LLM Engineering Zoomcamp (DataTalks.Club).</li>
+          <li>AWS Cloud Practitioner — studying for it now.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cv-item">
+      <div class="cv-when">Jul — Sep<br>2023</div>
+      <div>
+        <div class="cv-role">IT Assistant</div>
+        <div class="cv-org">IDRA Research &amp; Consulting — Tirana, Albania</div>
+        <ul class="cv-list">
+          <li>Maintained IT inventory and asset documentation across departments.</li>
+          <li>Supported IT systems and hardware, structured data for internal reports.</li>
+          <li>First time being the person other people came to when something broke.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="colophon" id="say-hi">
+    <div class="section-head">
+      <span class="num">0x04</span>
+      <h2><span class="hl">Say hi.</span></h2>
+    </div>
+
+    <p class="intro">
+      I'm open to <b>Werkstudent</b> roles in Bremen from July 2026, side
+      collaborations, and slow conversations about code, AI, or chess openings
+      I shouldn't be playing.
+    </p>
+
+    <div class="contact-lines">
+      <div><span class="k">email</span><a href="mailto:endirexhepi5@gmail.com">endirexhepi5@gmail.com</a></div>
+      <div><span class="k">github</span><a href="https://github.com/Endi-Rexhepi" target="_blank" rel="noopener noreferrer">github.com/Endi-Rexhepi</a></div>
+      <div><span class="k">linkedin</span><a href="https://www.linkedin.com/in/endi-rexhepi-5b15613ab/" target="_blank" rel="noopener noreferrer">in/endi-rexhepi</a></div>
+    </div>
+
+    <div class="signoff">— Endi.</div>
+  </section>
+
+  <footer>
+    <span>rendered in bremen · 2026</span>
+    <span>status: 200 OK</span>
+  </footer>
+
+</div>
+
+<script>
+  // theme toggle — match the icon to whatever the <head> script picked
+  const toggleBtn = document.getElementById('theme-toggle');
+  const themeIcon = document.getElementById('theme-icon');
+
+  if (document.documentElement.getAttribute('data-theme') === 'dark') {
+    themeIcon.textContent = '🌙';
+  } else {
+    themeIcon.textContent = '☀️';
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme); // remember it for next visit
+    themeIcon.textContent = newTheme === 'dark' ? '🌙' : '☀️';
+  });
+
+  // mark <html> so the CSS knows JS is alive (fade-ins, etc.)
+  document.documentElement.classList.add('js');
+
+  // grab everything we want to fade in on scroll
+  const targets = [];
+  document.querySelectorAll('section, .entry, .cv-item, .hero-actions, .meta-list, .facts, .stack, .contact-lines, .signoff')
+    .forEach(el=>{ el.classList.add('fade-up'); targets.push(el); });
+  document.querySelectorAll('.fade-up, .draw-line, h1.title .squiggle path').forEach(el=>targets.push(el));
+
+  const reveal = (el)=>el.classList.add('in');
+
+  if ('IntersectionObserver' in window) {
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach((e)=>{
+        if(e.isIntersecting){ reveal(e.target); obs.unobserve(e.target); }
+      });
+    },{threshold:0.1, rootMargin:'0px 0px -40px 0px'});
+    targets.forEach(el=>obs.observe(el));
+  } else {
+    // old browser, no observer — just show everything
+    targets.forEach(reveal);
+  }
+
+  // safety net: if anything got missed (some browser quirk), reveal after 3s
+  setTimeout(()=>targets.forEach(reveal), 3000);
+</script>
+
+</body>
+</html>
