@@ -4,99 +4,63 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light dark">
 <title>Endi Rexhepi</title>
 <meta name="description" content="Endi Rexhepi, Computer Science student at Constructor University Bremen.">
 <style>
-  :root {
-    --bg: #f3efe7;
-    --text: #2e2b26;
-    --muted: #7a7368;
-    --line: #d6cdbd;
-    --link: #556b3f;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #1e1c19;
-      --text: #e6e0d4;
-      --muted: #9c9488;
-      --line: #46413a;
-      --link: #a7b98c;
-    }
-  }
+body {
+  margin: 0;
+  background: #fafafa;
+  color: #222;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 18px;
+  line-height: 1.6;
+}
 
-  * { box-sizing: border-box; }
+main {
+  max-width: 550px;
+  margin: 0 auto;
+  padding: 96px 20px 80px;
+}
 
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: "Times New Roman", Times, serif;
-    font-size: 18px;
-    line-height: 1.6;
-    -webkit-text-size-adjust: 100%;
-  }
+h1 { font-size: 26px; font-weight: normal; margin: 0 0 8px; }
 
-  main {
-    max-width: 34rem;
-    margin: 0 auto;
-    padding: 6rem 1.25rem 5rem;
-  }
+h2 {
+  font-size: 21px;
+  font-weight: normal;
+  color: #6b6b6b;
+  margin: 56px 0 20px;
+}
 
-  h1 {
-    font-size: 1.6rem;
-    font-weight: normal;
-    margin: 0 0 0.5rem;
-  }
+p { margin: 0 0 6px; }
 
-  h2 {
-    font-size: 1.3rem;
-    font-weight: normal;
-    color: var(--muted);
-    margin: 3.5rem 0 1.25rem;
-  }
+a { color: #2a5db0; }
+a:hover { color: #173a75; }
 
-  p { margin: 0; }
-  p + p { margin-top: 0.4rem; }
+.grey { color: #6b6b6b; }
 
-  a {
-    color: var(--link);
-    text-decoration: underline;
-    text-decoration-color: var(--line);
-    text-underline-offset: 3px;
-  }
-  a:hover { text-decoration-color: currentColor; }
+.links { margin-top: 24px; }
+.links a { margin-right: 20px; }
 
-  .muted { color: var(--muted); }
-  .small { font-size: 0.875rem; }
+.project { margin-bottom: 24px; }
+.tech { font-size: 14px; color: #6b6b6b; }
 
-  ul { list-style: none; padding: 0; margin: 0; }
+table { border-collapse: collapse; }
+td { padding: 0 0 12px; vertical-align: top; }
+td.year { width: 100px; padding-right: 16px; color: #6b6b6b; }
 
-  .links {
-    margin-top: 1.5rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem 1.25rem;
-  }
+/* dark mode */
+@media (prefers-color-scheme: dark) {
+  body { background: #1b1b1b; color: #ddd; }
+  h2, .grey, .tech, td.year { color: #8f8f8f; }
+  a { color: #8cb4e6; }
+  a:hover { color: #b5d0f0; }
+}
 
-  .projects li + li { margin-top: 1.5rem; }
-  .title { color: var(--text); }
-
-  .rows { margin: 0; }
-  .rows div {
-    display: grid;
-    grid-template-columns: 6.5rem 1fr;
-    gap: 1rem;
-  }
-  .rows div + div { margin-top: 0.75rem; }
-  .rows dt { color: var(--muted); }
-  .rows dd { margin: 0; }
-
-  @media (max-width: 30rem) {
-    body { font-size: 17px; }
-    main { padding-top: 3.5rem; }
-    .rows div { grid-template-columns: 1fr; gap: 0; }
-  }
+/* phones */
+@media (max-width: 480px) {
+  body { font-size: 17px; }
+  main { padding-top: 56px; }
+}
 </style>
 </head>
 <body>
@@ -104,48 +68,48 @@
 
   <h1>Endi Rexhepi</h1>
   <p>Computer Science student at Constructor University Bremen. I build web apps and I'm learning to work with LLMs.</p>
-  <p class="muted">Bremen, Germany · open to Werkstudent roles</p>
+  <p class="grey">Bremen, Germany. Open to Werkstudent roles.</p>
 
-  <ul class="links">
-    <li><a href="mailto:endirexhepi5@gmail.com">endirexhepi5@gmail.com</a></li>
-    <li><a href="https://github.com/Endi-Rexhepi">GitHub</a></li>
-    <li><a href="https://www.linkedin.com/in/endi-rexhepi-5b15613ab/">LinkedIn</a></li>
-    <li><a href="./Endi_Rexhepi_CV.pdf">CV</a></li>
-  </ul>
+  <p class="links">
+    <a href="mailto:endirexhepi5@gmail.com">endirexhepi5@gmail.com</a>
+    <a href="https://github.com/Endi-Rexhepi">GitHub</a>
+    <a href="https://www.linkedin.com/in/endi-rexhepi-5b15613ab/">LinkedIn</a>
+    <a href="./Endi_Rexhepi_CV.pdf">CV</a>
+  </p>
 
   <h2>Projects</h2>
-  <ul class="projects">
-    <li>
-      <a href="https://github.com/Endi-Rexhepi/Remote-Access">Remote Access</a>
-      <p>A remote desktop tool built from scratch with Python's socket and ssl libraries: one PC shares its screen, the other controls it with mouse and keyboard. Secured with pinned TLS, argon2 password hashing, brute-force blocking and a consent prompt with a kill switch.</p>
-      <p class="muted small">Python · sockets · TLS · argon2 · OpenCV · pynput · tkinter</p>
-    </li>
-    <li>
-      <a href="https://erexhepi.itch.io/dreadfort">Dreadfort</a>
-      <p>A four-player dungeon crawler made with a team in 72 hours at the Press &amp; Play 2026 hackathon. Placed 5th of 13.</p>
-      <p class="muted small">JavaScript · Canvas · WebSockets</p>
-    </li>
-  </ul>
+
+  <div class="project">
+    <a href="https://github.com/Endi-Rexhepi/Remote-Access">Remote Access</a>
+    <p>A remote desktop tool built from scratch with Python's socket and ssl libraries: one PC shares its screen, the other controls it with mouse and keyboard. Secured with pinned TLS, argon2 password hashing, brute-force blocking and a consent prompt with a kill switch.</p>
+    <p class="tech">Python, sockets, TLS, argon2, OpenCV, pynput, tkinter</p>
+  </div>
+
+  <div class="project">
+    <a href="https://erexhepi.itch.io/dreadfort">Dreadfort</a>
+    <p>A four-player dungeon crawler made with a team in 72 hours at the Press &amp; Play 2026 hackathon. Placed 5th of 13.</p>
+    <p class="tech">JavaScript, Canvas, WebSockets</p>
+  </div>
 
   <h2>Experience</h2>
-  <dl class="rows">
-    <div>
-      <dt>2026–now</dt>
-      <dd>AI Engineer Intern, LAWCON Consulting (remote)</dd>
-    </div>
-    <div>
-      <dt>2026–now</dt>
-      <dd>Warehouse Worker, flaschenpost SE, Bremen <span style="white-space: nowrap">(part-time)</span></dd>
-    </div>
-    <div>
-      <dt>2024–2027</dt>
-      <dd>B.Sc. Computer Science, Constructor University Bremen</dd>
-    </div>
-    <div>
-      <dt>2023</dt>
-      <dd>IT Assistant, IDRA Research &amp; Consulting, Tirana</dd>
-    </div>
-  </dl>
+  <table>
+    <tr>
+      <td class="year">2026-now</td>
+      <td>AI Engineer Intern, LAWCON Consulting (remote)</td>
+    </tr>
+    <tr>
+      <td class="year">2026-now</td>
+      <td>Warehouse Worker, flaschenpost SE, Bremen (part-time)</td>
+    </tr>
+    <tr>
+      <td class="year">2024-2027</td>
+      <td>B.Sc. Computer Science, Constructor University Bremen</td>
+    </tr>
+    <tr>
+      <td class="year">2023</td>
+      <td>IT Assistant, IDRA Research &amp; Consulting, Tirana</td>
+    </tr>
+  </table>
 
 </main>
 </body>
